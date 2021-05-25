@@ -18,7 +18,7 @@ import BreakScreen from "../BreakScreen";
 import LoadingScreen from "../LoadingScreen";
 import coordinants from "../../../assets/gridCoordinants";
 
-// setup reload of a lavel, fix indicator, second committttttt
+// setup reload of a lavel, fix indicator, second committtttttoooo
 // add pause screens, send points to server and get it back, add sounds, setup login page,  fix screen dimesions error,
 // set up my profile and rankings, setup settings, deploy, chnges with panhendler
 
