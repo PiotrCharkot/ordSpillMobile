@@ -18,9 +18,9 @@ import BreakScreen from "../BreakScreen";
 import LoadingScreen from "../LoadingScreen";
 import coordinants from "../../../assets/gridCoordinants";
 
-// setup reload of a lavel, fix indicator, second commit
-// add pause screens, send points to server and get it back, add sounds, setup login page,  fix screen dimesions error,
-// set up my profile and rankings, setup settings, deploy, chnges with panhendler
+// setup reload of a lavel, fix indicator
+// add pause screens, send points to server and get it back, add sounds, setup login page
+// set up my profile and rankings, setup settings, deploy
 
 console.log("lina A", coordinants.xa);
 
