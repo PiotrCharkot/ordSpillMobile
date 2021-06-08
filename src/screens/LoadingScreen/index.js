@@ -9,6 +9,7 @@ const LoadingScreen = () => {
         justifyContent: "center",
         width: "100%",
         height: "100%",
+        backgroundColor: "#FAF0DC",
       }}
     >
       <ActivityIndicator color={"rgb(185, 35, 235)"} size={50} />

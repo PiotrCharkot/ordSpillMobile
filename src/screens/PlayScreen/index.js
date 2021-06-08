@@ -10,6 +10,7 @@ import {
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 
 import { useNavigation } from "@react-navigation/native";
+import { auth } from "../../firebase";
 import styles from "./styles";
 import Timer from "../../components/Timer";
 import GridTile from "../../components/GridTile";
@@ -18,19 +19,20 @@ import BreakScreen from "../BreakScreen";
 import LoadingScreen from "../LoadingScreen";
 import coordinants from "../../../assets/gridCoordinants";
 
-// setup reload of a lavel, fix indicator, second committtttttoooowelllloo last change is here
+// setup reload of a lavel, fix indicator,
 // add pause screens, send points to server and get it back, add sounds, setup login page,  fix screen dimesions error,
-// set up my profile and rankings, setup settings, deploy, chnges with panhendler, maybe
+// set up my profile and rankings, setup settings, deploy, chnges with panhendler,
 
 console.log("lina A", coordinants.xa);
 
 const PlayScreen = ({ navigation }) => {
   //const declarations
   const urlLink = "https://acidic-heavy-caterpillar.glitch.me/grid";
-  const breakTime = 80;
+  const breakTime = 100;
   const scoresTime = 3;
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
+  const [username, setUsername] = useState("Anonymus");
   const [currentAnswer, setCurrentAnswer] = useState("");
   const [a, setA] = useState("");
   const [b, setB] = useState("");
@@ -253,13 +255,27 @@ const PlayScreen = ({ navigation }) => {
     checkWordFunc();
   }
 
+  useEffect(() => {
+    const subscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUsername(auth.currentUser.providerData[0].displayName);
+
+        console.log("loggggged", auth.currentUser.providerData[0].displayName);
+      } else {
+        console.log("not loggggggggggggggggggged");
+      }
+    });
+    return subscribe;
+  }, []);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "",
-      headerStyle: { backgroundColor: "#FAF0DC" },
+      headerStyle: { backgroundColor: "#FAF0DC", shadowColor: "transparent" },
       headerTintColor: "rgb(11,156,49)",
+      headerBackTitle: "Lobby",
     });
-  }, []);
+  }, [navigation]);
 
   // fetch from server
   useEffect(() => {
@@ -803,11 +819,13 @@ const PlayScreen = ({ navigation }) => {
     p: p,
     serverAnswers: serverAnswers,
     playersAnswers: playersAnswers,
+    username: username,
     combo: combo,
     points: points,
     totalPoints: totalPoints,
     numOfPlayerAnswers: playersAnswers.length,
     numOfServerAnswers: serverAnswers.length,
+    breakTime: breakTime,
   };
 
   return isLoading ? (
@@ -839,7 +857,9 @@ const PlayScreen = ({ navigation }) => {
           </Text>
           <Text style={styles.pointsText}>
             <Text style={styles.pointsColor}>{playersAnswers.length}</Text>
-            <Text>/ {serverAnswers.length} words</Text>
+            <Text>
+              / {serverAnswers.length} words {username}
+            </Text>
           </Text>
         </View>
       </View>

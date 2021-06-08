@@ -1,6 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, SectionList, StatusBar } from "react-native";
+import React, { useState, useEffect, useLayoutEffect } from "react";
+import {
+  View,
+  Text,
+  SectionList,
+  StatusBar,
+  TouchableOpacity,
+} from "react-native";
 import styles from "./styles";
+import { useNavigation } from "@react-navigation/native";
+import { auth } from "../../firebase";
 import WordItem from "../../components/WordItem";
 import Timer from "../../components/Timer";
 import SmallGridTile from "../../components/SmallGridTile";
@@ -25,12 +33,16 @@ const BreakScreen = (prop) => {
   const n = gridData.n;
   const o = gridData.o;
   const p = gridData.p;
+  let username = gridData.username;
   const totalPoints = gridData.totalPoints;
   const numOfPlayerAnswers = gridData.numOfPlayerAnswers;
   const numOfServerAnswers = gridData.numOfServerAnswers;
-  const playersAnswers = gridData.playersAnswers;
+  let playersAnswers = gridData.playersAnswers;
   const serverAnswers = gridData.serverAnswers;
   const combo = gridData.combo;
+  const breakTime = gridData.breakTime;
+
+  const navigation = useNavigation();
 
   const [colorA, setColorA] = useState(false);
   const [colorB, setColorB] = useState(false);
@@ -49,18 +61,32 @@ const BreakScreen = (prop) => {
   const [colorO, setColorO] = useState(false);
   const [colorP, setColorP] = useState(false);
 
-  const [isEndOfBreake, setIsEndOfBreak] = useState(true);
+  const [isEndOfBreake, setIsEndOfBreak] = useState(false);
   const [showTimer, setShowTimer] = useState(false);
+  const [userID, setUserID] = useState(Math.random());
   const [counter, setCounter] = useState(0);
 
   let count = 0;
+  const url = "https://acidic-heavy-caterpillar.glitch.me/resultsMobile";
+
+  if (playersAnswers.length === 0) {
+    playersAnswers = [{ id: 1, word: "no answers" }];
+  }
+
+  const longestAnswerObj = playersAnswers.reduce((a, b) =>
+    a.word.length > b.word.length ? a : b
+  );
+  const longestAnswer = longestAnswerObj.word;
+
+  console.log("name during break heeeeeeeeeeeeeeere", username);
+
+  const data = { username, points, userID, longestAnswer };
 
   const displayLongestWord = (num) => {
     if (num >= combo.length) {
       clearInterval(interval);
       return;
     }
-    console.log("ruuuuuuuuuuuuuun", count);
     if (combo[num] === "a") {
       setColorA(true);
       count++;
@@ -127,6 +153,19 @@ const BreakScreen = (prop) => {
       return;
     }
   };
+
+  useEffect(() => {
+    const postingResult = async () => {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const parsedResponse = await response.json();
+      console.log("server response in the brake", parsedResponse);
+    };
+    postingResult();
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {
@@ -252,7 +291,7 @@ const BreakScreen = (prop) => {
           <View style={styles.timerContainer}>
             {showTimer ? (
               <Timer
-                clockCounter={20}
+                clockCounter={breakTime}
                 runDown={(boolean) => setIsEndOfBreak(boolean)}
               />
             ) : (
@@ -267,6 +306,25 @@ const BreakScreen = (prop) => {
             <Text style={styles.pointsColor}>{numOfPlayerAnswers}</Text>
             <Text>/ {numOfServerAnswers} words</Text>
           </Text>
+        </View>
+
+        <View style={styles.middleContainer}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Scores", { params: userID })}
+          >
+            <View style={styles.otherButtons}>
+              <Text style={styles.buttonText}>See scores</Text>
+            </View>
+          </TouchableOpacity>
+          {isEndOfBreake ? (
+            <TouchableOpacity onPress={() => navigation.replace("Play")}>
+              <View style={styles.otherButtons}>
+                <Text style={styles.buttonText}>Play again</Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.otherButtonsClear}></View>
+          )}
         </View>
         <View style={styles.samllGridCont}>
           <View style={styles.gridRow}>

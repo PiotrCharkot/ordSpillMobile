@@ -5,31 +5,19 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     alignItems: "center",
-    justifyContent: "space-around",
-    backgroundColor: "#FAF0DC",
   },
-  imageContainer: {
-    height: 50,
-    width: "100%",
+  imgContainer: {
     alignItems: "center",
+    marginTop: 50,
   },
-  gameInfo: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "space-around",
+  tinyLogo: {
+    width: 150,
+    height: 150,
   },
-  buttonsContainer: {
-    width: "100%",
-    alignItems: "center",
-  },
-  playButton: {
-    height: 45,
-    width: 250,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "lightgrey",
-    marginBottom: 10,
-    borderRadius: 10,
+  buttonContainer: {
+    position: "absolute",
+    height: "100%",
+    justifyContent: "flex-end",
   },
   otherButtons: {
     height: 30,
