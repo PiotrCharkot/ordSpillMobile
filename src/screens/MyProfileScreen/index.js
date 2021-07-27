@@ -25,7 +25,6 @@ const MyProfile = () => {
       .child("images/" + imgTitle);
 
     setFileUrl(await ref.getDownloadURL());
-    console.log("liiiiiiiiiiiiiiink", file);
     setImgSrc(await file);
   };
 
@@ -43,10 +42,32 @@ const MyProfile = () => {
     })();
   }, []);
 
-  console.log("here is some ppppppathhhhhh", fileUrl);
-
   const showButtons = () => {
     setShowOptions(!showOptions);
+  };
+
+  const takePic = async () => {
+    let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this appp to access your camera!");
+      return;
+    }
+
+    let result = await ImagePicker.launchCameraAsync();
+
+    console.log("photo results are hereeeeeeeeeeeeee", result);
+
+    setShowOptions(false);
+
+    if (!result.cancelled) {
+      await uploadImage(result.uri, imgTitle);
+
+      setImgSrc(result.uri);
+      setTimeout(() => {
+        setRefresh(!refresh);
+      }, 2000);
+    }
   };
 
   const choosePic = async () => {
@@ -86,13 +107,41 @@ const MyProfile = () => {
     <View style={styles.container}>
       <View style={styles.imgContainer}>
         <Image style={styles.tinyLogo} source={{ uri: imgSrc }} />
-        <TouchableOpacity onPress={showButtons}>
-          <Text>Change image</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-          <Text>jump to home</Text>
-        </TouchableOpacity>
       </View>
+
+      <View style={styles.textConteiner}>
+        <View style={styles.dataEntry}>
+          <View>
+            <Text>Username:</Text>
+          </View>
+          <View>
+            <Text style={styles.text}>
+              {auth.currentUser.providerData[0].displayName}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.dataEntry}>
+          <View>
+            <Text>Email:</Text>
+          </View>
+          <View>
+            <Text style={styles.text}>
+              {auth.currentUser.providerData[0].email}
+            </Text>
+          </View>
+        </View>
+      </View>
+      <TouchableOpacity onPress={showButtons}>
+        <View style={styles.otherButtons}>
+          <Text>Change image</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.replace("Home")}>
+        <View style={styles.otherButtons}>
+          <Text>Go to lobby</Text>
+        </View>
+      </TouchableOpacity>
 
       {showOptions ? (
         <View style={styles.buttonContainer}>
@@ -101,7 +150,7 @@ const MyProfile = () => {
               <Text style={styles.buttonText}>Choose Picture</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={takePic}>
             <View style={styles.otherButtons}>
               <Text style={styles.buttonText}>Take Photo</Text>
             </View>

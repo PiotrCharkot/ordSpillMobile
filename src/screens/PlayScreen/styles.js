@@ -19,6 +19,10 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginTop: 5,
   },
+  logoImg: {
+    height: 40,
+    width: 70,
+  },
   flatList: {},
   pointsContainer: {},
   pointsText: {

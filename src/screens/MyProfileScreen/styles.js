@@ -11,8 +11,28 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   tinyLogo: {
-    width: 150,
-    height: 150,
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+  },
+  textConteiner: {
+    width: 250,
+    marginTop: 30,
+    justifyContent: "center",
+    alignItems: "flex-start",
+    marginBottom: 30,
+  },
+  dataEntry: {
+    flexDirection: "row",
+    width: 250,
+    marginTop: 20,
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+  },
+  text: {
+    fontSize: 15,
+    marginTop: 20,
+    fontWeight: "bold",
   },
   buttonContainer: {
     position: "absolute",

@@ -34,6 +34,7 @@ const BreakScreen = (prop) => {
   const o = gridData.o;
   const p = gridData.p;
   let username = gridData.username;
+  const userImgAdress = gridData.userImgAdress;
   const totalPoints = gridData.totalPoints;
   const numOfPlayerAnswers = gridData.numOfPlayerAnswers;
   const numOfServerAnswers = gridData.numOfServerAnswers;
@@ -62,11 +63,17 @@ const BreakScreen = (prop) => {
   const [colorP, setColorP] = useState(false);
 
   const [isEndOfBreake, setIsEndOfBreak] = useState(false);
+  const [timeForCountdown, setTimeForCountdown] = useState(0);
+  const [trigger, setTrigger] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [showTimer, setShowTimer] = useState(false);
+  const [showScoresButton, setShowScoresButton] = useState(false);
   const [userID, setUserID] = useState(Math.random());
   const [counter, setCounter] = useState(0);
 
+  let uid = null;
   let count = 0;
+  let position = 0;
   const url = "https://acidic-heavy-caterpillar.glitch.me/resultsMobile";
 
   if (playersAnswers.length === 0) {
@@ -78,12 +85,22 @@ const BreakScreen = (prop) => {
   );
   const longestAnswer = longestAnswerObj.word;
 
-  console.log("name during break heeeeeeeeeeeeeeere", username);
+  const data = {
+    username,
+    points,
+    position,
+    userID,
+    longestAnswer,
+    userImgAdress,
+  };
 
-  const data = { username, points, userID, longestAnswer };
+  const notPosting = () => {
+    console.log("Im not posting this because there is no answers");
+  };
 
   const displayLongestWord = (num) => {
     if (num >= combo.length) {
+      console.log("clearing interval");
       clearInterval(interval);
       return;
     }
@@ -162,15 +179,39 @@ const BreakScreen = (prop) => {
         body: JSON.stringify(data),
       });
       const parsedResponse = await response.json();
-      console.log("server response in the brake", parsedResponse);
     };
-    postingResult();
+    data.longestAnswer !== "no answers" ? postingResult() : notPosting();
+    return postingResult;
   }, []);
 
   useEffect(() => {
-    setTimeout(() => {
+    const gettingTime = async () => {
+      const responseClock = await fetch(
+        "https://acidic-heavy-caterpillar.glitch.me/clock"
+      );
+
+      setTimeForCountdown(await responseClock.json());
+      setIsLoading(true);
+    };
+    gettingTime();
+  }, []);
+
+  useEffect(() => {
+    const timeoutTimer = setTimeout(() => {
       setShowTimer(true);
     }, 250);
+    return () => {
+      clearTimeout(timeoutTimer);
+    };
+  }, []);
+
+  useEffect(() => {
+    const timeoutScoresButton = setTimeout(() => {
+      setShowScoresButton(true);
+    }, 3500);
+    return () => {
+      clearTimeout(timeoutScoresButton);
+    };
   }, []);
 
   let interval = setInterval(() => {
@@ -289,9 +330,9 @@ const BreakScreen = (prop) => {
       <View style={styles.rightSideCont}>
         <View style={styles.upperContainer}>
           <View style={styles.timerContainer}>
-            {showTimer ? (
+            {showTimer && isLoading ? (
               <Timer
-                clockCounter={breakTime}
+                clockCounter={timeForCountdown}
                 runDown={(boolean) => setIsEndOfBreak(boolean)}
               />
             ) : (
@@ -309,13 +350,23 @@ const BreakScreen = (prop) => {
         </View>
 
         <View style={styles.middleContainer}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Scores", { params: userID })}
-          >
-            <View style={styles.otherButtons}>
-              <Text style={styles.buttonText}>See scores</Text>
-            </View>
-          </TouchableOpacity>
+          {showScoresButton ? (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("Scores", {
+                  params: userID,
+                  params2: isEndOfBreake,
+                })
+              }
+            >
+              <View style={styles.otherButtons}>
+                <Text style={styles.buttonText}>See scores</Text>
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <View></View>
+          )}
+
           {isEndOfBreake ? (
             <TouchableOpacity onPress={() => navigation.replace("Play")}>
               <View style={styles.otherButtons}>

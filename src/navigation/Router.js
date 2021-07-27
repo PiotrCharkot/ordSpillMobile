@@ -8,6 +8,7 @@ import ScoreScreen from "../screens/ScoreScreen";
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import MyProfilScreen from "../screens/MyProfileScreen";
+import RankingScreen from "../screens/RankingScreen";
 
 const Stack = createStackNavigator();
 
@@ -43,6 +44,11 @@ const Router = () => {
         <Stack.Screen
           name="MyProfil"
           component={MyProfilScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Ranking"
+          component={RankingScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
