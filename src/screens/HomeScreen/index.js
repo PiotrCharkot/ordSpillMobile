@@ -15,7 +15,7 @@ const HomeScreen = () => {
           <Text>Number of players:</Text>
         </View>
         <View>
-          <Text>Game time:</Text>
+          <Text>Game tiime:</Text>
         </View>
       </View>
       <View style={styles.buttonsContainer}>

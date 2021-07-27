@@ -3,7 +3,7 @@ import { Dimensions } from "react-native";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
-const margin = 5;
+const margin = -45;
 
 export default {
   xa: screenHeight - margin - screenWidth + screenWidth / 12,

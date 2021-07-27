@@ -27,7 +27,7 @@ console.log("lina A", coordinants.xa);
 const PlayScreen = ({ navigation }) => {
   //const declarations
   const urlLink = "https://acidic-heavy-caterpillar.glitch.me/grid";
-  const breakTime = 80;
+  const breakTime = 10;
   const scoresTime = 3;
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
