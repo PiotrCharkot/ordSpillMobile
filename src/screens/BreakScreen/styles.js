@@ -61,6 +61,31 @@ const styles = StyleSheet.create({
   pointsColor: {
     color: "rgb(11,156,49)",
   },
+  middleContainer: {
+    marginRight: 5,
+  },
+  otherButtons: {
+    height: 30,
+    width: 200,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "salmon",
+    marginBottom: 10,
+    borderRadius: 10,
+  },
+  otherButtonsClear: {
+    height: 30,
+    width: 200,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 10,
+    borderRadius: 10,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
   samllGridCont: {
     marginBottom: 30,
     marginRight: 5,

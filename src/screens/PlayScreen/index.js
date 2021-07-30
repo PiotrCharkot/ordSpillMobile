@@ -2,14 +2,19 @@ import React, { useLayoutEffect, useEffect, useState, useRef } from "react";
 import {
   View,
   Text,
+  Image,
   Dimensions,
   PanResponder,
   FlatList,
   Animated,
+  TouchableOpacity,
 } from "react-native";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 
 import { useNavigation } from "@react-navigation/native";
+import { auth } from "../../firebase";
+import { Audio } from "expo-av";
+import * as firebase from "firebase";
 import styles from "./styles";
 import Timer from "../../components/Timer";
 import GridTile from "../../components/GridTile";
@@ -18,19 +23,18 @@ import BreakScreen from "../BreakScreen";
 import LoadingScreen from "../LoadingScreen";
 import coordinants from "../../../assets/gridCoordinants";
 
-// setup reload of a lavel, fix indicator, second committtttttoooowelllloo last change here
-// add pause screens, send points to server and get it back, add sounds, setup login page,  fix screen dimesions error,
-// set up my profile and rankings, setup settings, deploy, chnges with panhendler
+// set up my profile and rankings, deploy
 
 console.log("lina A", coordinants.xa);
 
 const PlayScreen = ({ navigation }) => {
   //const declarations
   const urlLink = "https://acidic-heavy-caterpillar.glitch.me/grid";
-  const breakTime = 10;
+  const breakTime = 25;
   const scoresTime = 3;
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
+  const [username, setUsername] = useState("Anonymus");
   const [currentAnswer, setCurrentAnswer] = useState("");
   const [a, setA] = useState("");
   const [b, setB] = useState("");
@@ -54,11 +58,15 @@ const PlayScreen = ({ navigation }) => {
   const [serverAnswers, setServerAnswers] = useState([]);
   const [points, setPoints] = useState(0);
   const [totalPoints, setTotalPoints] = useState(0);
+  const [userImgAdress, setUserImgAdress] = useState(
+    "https://image.shutterstock.com/image-vector/user-login-authenticate-icon-human-260nw-1365533969.jpg"
+  );
   const [clockCounter, setClockCounter] = useState(0);
   const [combo, setCombo] = useState([]);
   const [reload, setReload] = useState(true);
   const [isBreak, setIsBreak] = useState(false);
   const [isScoresTime, setIsScoreTime] = useState(false);
+  const [sound, setSound] = useState();
   const [currentArray, setCurrentArray] = useState({
     AX: 0,
     BX: 0,
@@ -207,6 +215,11 @@ const PlayScreen = ({ navigation }) => {
     return Object.keys(object).find((key) => object[key] === value);
   };
 
+  //function replacing to homepage
+  const goHome = () => {
+    navigation.replace("Home");
+  };
+
   // function chcecking answers
   const checkWordFunc = () => {
     const preCheckedWord = playersAnswers.find(
@@ -230,6 +243,7 @@ const PlayScreen = ({ navigation }) => {
       const additonalPoints = Math.pow(checkedWord.length - 2, 2);
       setPoints(points + additonalPoints);
 
+      playSound();
       setFlushGreen(true);
       setTimeout(() => {
         setFlushGreen(false);
@@ -246,6 +260,18 @@ const PlayScreen = ({ navigation }) => {
     setRunCheck(false);
   };
 
+  //function playing sound when word is found
+  const playSound = async () => {
+    console.log("im trying");
+    const { sound } = await Audio.Sound.createAsync(
+      require("../../../assets/gulp.wav")
+    );
+    setSound(sound);
+
+    console.log("Playing Sound");
+    await sound.playAsync();
+  };
+
   if (isBreak) {
     console.log("time is up");
   }
@@ -253,13 +279,55 @@ const PlayScreen = ({ navigation }) => {
     checkWordFunc();
   }
 
+  useEffect(() => {
+    return sound
+      ? () => {
+          console.log("Unloading Sound");
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
+
+  useEffect(() => {
+    const subscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUsername(auth.currentUser.providerData[0].displayName);
+        const uid = auth.currentUser.uid;
+        const setAdress = async () => {
+          var ref = firebase
+            .storage()
+            .ref()
+            .child("images/" + uid);
+
+          setUserImgAdress(await ref.getDownloadURL());
+        };
+
+        setAdress();
+
+        console.log("loggggged", auth.currentUser.providerData[0].displayName);
+      } else {
+        console.log("not loggggggggggggggggggged");
+      }
+    });
+    return subscribe;
+  }, []);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "",
-      headerStyle: { backgroundColor: "#FAF0DC" },
+      headerStyle: { backgroundColor: "#FAF0DC", shadowColor: "transparent" },
       headerTintColor: "rgb(11,156,49)",
+      headerBackTitleVisible: false,
+      headerLeft: () => (
+        <TouchableOpacity onPress={goHome}>
+          <Image
+            style={styles.logoImg}
+            source={require("../../../assets/LogoIcon.png")}
+          />
+        </TouchableOpacity>
+      ),
     });
-  }, []);
+  }, [navigation]);
 
   // fetch from server
   useEffect(() => {
@@ -803,11 +871,14 @@ const PlayScreen = ({ navigation }) => {
     p: p,
     serverAnswers: serverAnswers,
     playersAnswers: playersAnswers,
+    username: username,
+    userImgAdress: userImgAdress,
     combo: combo,
     points: points,
     totalPoints: totalPoints,
     numOfPlayerAnswers: playersAnswers.length,
     numOfServerAnswers: serverAnswers.length,
+    breakTime: breakTime,
   };
 
   return isLoading ? (
@@ -839,7 +910,9 @@ const PlayScreen = ({ navigation }) => {
           </Text>
           <Text style={styles.pointsText}>
             <Text style={styles.pointsColor}>{playersAnswers.length}</Text>
-            <Text>/ {serverAnswers.length} words</Text>
+            <Text>
+              / {serverAnswers.length} words {username}
+            </Text>
           </Text>
         </View>
       </View>

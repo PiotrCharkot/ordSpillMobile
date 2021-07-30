@@ -5,6 +5,10 @@ import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "../screens/HomeScreen";
 import PlayScreen from "../screens/PlayScreen";
 import ScoreScreen from "../screens/ScoreScreen";
+import LoginScreen from "../screens/LoginScreen";
+import RegisterScreen from "../screens/RegisterScreen";
+import MyProfilScreen from "../screens/MyProfileScreen";
+import RankingScreen from "../screens/RankingScreen";
 
 const Stack = createStackNavigator();
 
@@ -15,19 +19,37 @@ const Router = () => {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{ headerShown: false }}
+          options={{ headerShown: false, gestureEnabled: false }}
         />
         <Stack.Screen
           name="Play"
           component={PlayScreen}
           options={{ headerShown: true, gestureEnabled: false }}
-          headerStyle
         />
         <Stack.Screen
           name="Scores"
           component={ScoreScreen}
           options={{ headerShown: true, gestureEnabled: false }}
-          headerStyle
+        />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Register"
+          component={RegisterScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="MyProfil"
+          component={MyProfilScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Ranking"
+          component={RankingScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
