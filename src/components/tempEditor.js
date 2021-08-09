@@ -190,3 +190,9 @@ for (let i = 0; i < 2; i++) {
     ]
   );
 }
+
+// #1B486B BLUE
+// #28A352 DARK GREEN
+// #B2DB34 GREEN
+// #F2AC34 LIGHT ORANGE
+// #FC7634 DARK ORANGE

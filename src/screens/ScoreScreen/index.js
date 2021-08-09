@@ -22,8 +22,8 @@ const ScoreScreen = ({ route, navigation }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "",
-      headerStyle: { backgroundColor: "#FAF0DC", shadowColor: "transparent" },
-      headerTintColor: "rgb(11,156,49)",
+      headerStyle: { backgroundColor: "#B2DB34", shadowColor: "transparent" },
+      headerTintColor: "#28A352",
       headerBackTitle: "Answers",
     });
   }, [navigation]);
@@ -70,7 +70,10 @@ const ScoreScreen = ({ route, navigation }) => {
         <View style={styles.leftUp}>
           {showPlace ? (
             <Text style={styles.textLeft}>
-              Your place: <Text style={styles.textLeft2}>{myPlace},,,{percentOf}</Text>
+              Your place:{" "}
+              <Text style={styles.textLeft2}>
+                {myPlace} you beat{percentOf}%
+              </Text>
             </Text>
           ) : (
             <Text style={styles.textLeft}>Your place:</Text>

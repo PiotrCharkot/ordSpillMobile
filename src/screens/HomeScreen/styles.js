@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     justifyContent: "space-around",
-    backgroundColor: "#FAF0DC",
+    backgroundColor: "#B2DB34",
   },
   imageContainer: {
     width: "100%",
@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
   },
   numOfPlayers: {
     alignItems: "center",
+  },
+  loaderCont: {
+    height: 50,
   },
   textPlayerCount: {
     marginTop: 35,
@@ -54,7 +57,7 @@ const styles = StyleSheet.create({
     width: 250,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "lightgrey",
+    backgroundColor: "#1B486B",
     marginBottom: 10,
     borderRadius: 10,
   },
@@ -63,7 +66,7 @@ const styles = StyleSheet.create({
     width: 250,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "salmon",
+    backgroundColor: "#FC7634",
     marginBottom: 10,
     borderRadius: 10,
   },

@@ -7,13 +7,17 @@ const styles = StyleSheet.create({
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FAF0DC",
+    backgroundColor: "#B2DB34",
   },
   imgContainer: {
     justifyContent: "center",
     alignItems: "center",
     marginTop: 40,
-    marginBottom: 40,
+    marginBottom: 0,
+  },
+  logoImg: {
+    height: 100,
+    width: 160,
   },
   formContainer: {
     width: 250,
@@ -23,7 +27,7 @@ const styles = StyleSheet.create({
     width: 250,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "salmon",
+    backgroundColor: "#FC7634",
     marginBottom: 10,
     borderRadius: 10,
   },

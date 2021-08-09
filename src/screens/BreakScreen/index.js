@@ -85,12 +85,11 @@ const BreakScreen = (prop) => {
   );
   const longestAnswer = longestAnswerObj.word;
 
-  if (auth && userID === null) {
-    console.log('here is authhhhhh', auth.currentUser);
-    setUserID(auth.currentUser.uid)
-    
+  if (auth.currentUser && userID === null) {
+    console.log("here is authhhhhh", auth.currentUser);
+    setUserID(auth.currentUser.uid);
   } else if (userID === null) {
-    setUserID(Math.random())
+    setUserID(Math.random());
   }
 
   const data = {

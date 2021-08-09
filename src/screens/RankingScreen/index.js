@@ -1,11 +1,33 @@
-import React from "react";
-import { View, Text } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, FlatList } from "react-native";
 import styles from "./styles";
+import RankingItem from "../../components/RankingItem";
 
 const RankingScreen = () => {
+  const [getRanking, setGetRanking] = useState(null);
+  const [showRanking, setShowRanking] = useState(true);
+
+  useEffect(() => {
+    const fetchingRanking = async () => {
+      const response = await fetch(
+        "https://acidic-heavy-caterpillar.glitch.me/gettingPoints"
+      );
+      setGetRanking(await response.json());
+    };
+    fetchingRanking();
+  }, []);
+
   return (
-    <View>
-      <Text>Rankings will show up here</Text>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Ranking</Text>
+      </View>
+      <FlatList
+        style={styles.list}
+        data={getRanking}
+        keyExtractor={(item) => item.userID.toString()}
+        renderItem={({ item }) => <RankingItem params={item} />}
+      />
     </View>
   );
 };

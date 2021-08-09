@@ -5,6 +5,7 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     alignItems: "center",
+    backgroundColor: "#B2DB34",
   },
   imgContainer: {
     alignItems: "center",
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
     width: 250,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "salmon",
+    backgroundColor: "#FC7634",
     marginBottom: 10,
     borderRadius: 10,
   },

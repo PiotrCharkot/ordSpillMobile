@@ -18,10 +18,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "rgb(11,156,49)",
+    color: "#28A352",
   },
   title2: {
     fontSize: 20,
     fontWeight: "bold",
+    color: "#1B486B",
   },
 });

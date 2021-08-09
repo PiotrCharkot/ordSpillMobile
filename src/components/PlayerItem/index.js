@@ -35,7 +35,7 @@ const PlayerItem = ({ params, userID }) => {
 
       <View style={styles.imgCont}>
         <View style={styles.pointsCont}>
-          <Text>{params.points}</Text>
+          <Text style={styles.pointsContText}>{params.points}</Text>
         </View>
         <Image style={styles.image} source={{ uri: params.userImgAdress }} />
       </View>
@@ -48,16 +48,18 @@ export default PlayerItem;
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    backgroundColor: "lightgreen",
+    backgroundColor: "#28A352",
     borderRadius: 25,
     width: "100%",
     marginBottom: 2,
     alignItems: "center",
     justifyContent: "space-between",
+    color: "white",
   },
   container2: {
     flexDirection: "row",
-    backgroundColor: "lightblue",
+    color: "white",
+    backgroundColor: "#1B486B",
     borderRadius: 25,
     width: "100%",
     marginBottom: 2,
@@ -67,6 +69,7 @@ const styles = StyleSheet.create({
   leftCont: {
     flexDirection: "row",
     alignItems: "center",
+    color: "white",
   },
   place: {
     height: 50,
@@ -74,11 +77,12 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "lightpink",
   },
+
   posText: {
     fontSize: 20,
     fontWeight: "bold",
+    color: "white",
   },
   midCont: {
     marginLeft: 5,
@@ -86,12 +90,18 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 20,
     fontWeight: "bold",
+    color: "white",
   },
-  answer: {},
+  answer: {
+    color: "white",
+  },
   pointsCont: {
     height: 50,
     width: 50,
     justifyContent: "center",
+  },
+  pointsContText: {
+    color: "white",
   },
   imgCont: {
     flexDirection: "row",

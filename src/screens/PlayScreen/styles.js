@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     justifyContent: "space-between",
-    backgroundColor: "#FAF0DC",
+    backgroundColor: "#B2DB34",
   },
   upperContainer: {
     flexDirection: "row",
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   pointsColor: {
-    color: "rgb(11,156,49)",
+    color: "#28A352",
   },
   answerContainer: {
     flex: 1,
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   answerText: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "rgb(11,156,49)",
+    color: "#28A352",
   },
   gridContainer: {
     marginBottom: 5,
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   green: {
     height: screenWidth,
     width: screenWidth,
-    backgroundColor: "rgba(11,156,49,0.80)",
+    backgroundColor: "#28A352",
     position: "absolute",
     borderRadius: 8,
   },
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   orange: {
     height: screenWidth,
     width: screenWidth,
-    backgroundColor: "rgba(211,84,0,0.30)",
+    backgroundColor: "lightyellow",
     position: "absolute",
     borderRadius: 8,
   },
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   red: {
     height: screenWidth,
     width: screenWidth,
-    backgroundColor: "rgba(255,0,0,0.80)",
+    backgroundColor: "#FC7634",
     position: "absolute",
     borderRadius: 8,
   },

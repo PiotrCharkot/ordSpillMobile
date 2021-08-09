@@ -302,7 +302,13 @@ const PlayScreen = ({ navigation }) => {
           setUserImgAdress(await ref.getDownloadURL());
         };
 
-        setAdress();
+        setAdress()
+          .then(() => {
+            console.log("Promise resolved");
+          })
+          .catch(() => {
+            console.log("there is no picture for that");
+          });
 
         console.log("loggggged", auth.currentUser.providerData[0].displayName);
       } else {
@@ -315,7 +321,7 @@ const PlayScreen = ({ navigation }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "",
-      headerStyle: { backgroundColor: "#FAF0DC", shadowColor: "transparent" },
+      headerStyle: { backgroundColor: "#B2DB34", shadowColor: "transparent" },
       headerTintColor: "rgb(11,156,49)",
       headerBackTitleVisible: false,
       headerLeft: () => (
@@ -910,9 +916,7 @@ const PlayScreen = ({ navigation }) => {
           </Text>
           <Text style={styles.pointsText}>
             <Text style={styles.pointsColor}>{playersAnswers.length}</Text>
-            <Text>
-              / {serverAnswers.length} words {username}
-            </Text>
+            <Text>/ {serverAnswers.length} words</Text>
           </Text>
         </View>
       </View>

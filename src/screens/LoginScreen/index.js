@@ -33,7 +33,10 @@ const LoginScreen = ({ navigation }) => {
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <View style={styles.imgContainer}>
-        <Image source={require("../../../assets/favicon.png")} />
+        <Image
+          style={styles.logoImg}
+          source={require("../../../assets/LogoIcon.png")}
+        />
       </View>
       <View style={styles.formContainer}>
         <Input

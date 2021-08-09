@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
-    backgroundColor: "#FAF0DC",
+    backgroundColor: "#B2DB34",
   },
   serverAnswers: {
     marginBottom: 30,
@@ -17,12 +17,14 @@ const styles = StyleSheet.create({
     overflow: "scroll",
   },
   header: {
-    backgroundColor: "#FAF0DC",
+    backgroundColor: "#B2DB34",
+    color: "black",
+    fontSize: 20,
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "rgb(11,156,49)",
+    color: "#1B486B",
   },
   title2: {
     fontSize: 20,
@@ -59,7 +61,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   pointsColor: {
-    color: "rgb(11,156,49)",
+    color: "#28A352",
   },
   middleContainer: {
     marginRight: 5,
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
     width: 200,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "salmon",
+    backgroundColor: "#FC7634",
     marginBottom: 10,
     borderRadius: 10,
   },

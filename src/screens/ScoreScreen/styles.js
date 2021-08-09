@@ -5,7 +5,7 @@ const screenWidth = Dimensions.get("window").width;
 const styles = StyleSheet.create({
   container: {
     height: "100%",
-    backgroundColor: "#FAF0DC",
+    backgroundColor: "#B2DB34",
   },
   upperContainer: {
     width: "100%",
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     width: 200,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "salmon",
+    backgroundColor: "#FC7634",
     marginBottom: 10,
     marginTop: 15,
     borderRadius: 10,

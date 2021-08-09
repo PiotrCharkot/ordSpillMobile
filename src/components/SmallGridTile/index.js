@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   tile: {
     width: (screenWidth - 182) / 4,
     height: (screenWidth - 182) / 4,
-    backgroundColor: "lightblue",
+    backgroundColor: "#1B486B",
     borderRadius: 6,
     justifyContent: "center",
     alignItems: "center",
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   tileAlt: {
     width: (screenWidth - 190) / 4,
     height: (screenWidth - 190) / 4,
-    backgroundColor: "lightgreen",
+    backgroundColor: "#28A352",
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",

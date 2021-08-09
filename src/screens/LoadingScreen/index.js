@@ -10,7 +10,7 @@ const LoadingScreen = () => {
         justifyContent: "center",
         width: "100%",
         height: "100%",
-        backgroundColor: "#FAF0DC",
+        backgroundColor: "#B2DB34",
       }}
     >
       <View

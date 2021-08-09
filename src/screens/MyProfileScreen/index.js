@@ -14,11 +14,11 @@ const MyProfile = () => {
   const [games, setGames] = useState(0);
   const [percentOf, setPercentOf] = useState(0);
   const [showPoints, setShowPoints] = useState(false);
-  const [showData, setShowData] = useState(false)
+  const [showData, setShowData] = useState(false);
   const [refresh, setRefresh] = useState(true);
   const [fileUrl, setFileUrl] = useState(null);
   const [imgSrc, setImgSrc] = useState(
-    "https://reactnative.dev/img/tiny_logo.png"
+    "https://image.shutterstock.com/image-vector/user-login-authenticate-icon-human-260nw-1365533969.jpg"
   );
 
   const navigation = useNavigation();
@@ -34,20 +34,28 @@ const MyProfile = () => {
     setImgSrc(await file);
   };
 
-  setPicture(fileUrl);
+  setPicture(fileUrl)
+    .then(() => {
+      console.log("Promise resolved");
+    })
+    .catch(() => {
+      console.log("there is no picture for that");
+    });
 
   console.log(auth.currentUser.uid);
 
-
   if (showData) {
     for (let i = 0; i < getPoints.length; i++) {
-        if (getPoints[i].userID === auth.currentUser.uid) {
-          setGames(getPoints[i].userGames.length);
-          setPoints(getPoints[i].userPoints.reduce((a, b) => a + b, 0))
-          setPercentOf((getPoints[i].userGames.reduce((a, b) => a + b, 0)/getPoints[i].userGames.length))
-          setShowPoints(true);
-          setShowData(false);
-        }
+      if (getPoints[i].userID === auth.currentUser.uid) {
+        setGames(getPoints[i].userGames.length);
+        setPoints(getPoints[i].userPoints.reduce((a, b) => a + b, 0));
+        setPercentOf(
+          getPoints[i].userGames.reduce((a, b) => a + b, 0) /
+            getPoints[i].userGames.length
+        );
+        setShowPoints(true);
+        setShowData(false);
+      }
     }
   }
 
@@ -60,12 +68,9 @@ const MyProfile = () => {
       );
       setGetPoints(await response.json());
       setShowData(true);
-      console.log('data from databse', getPoints);
+      console.log("data from databse", getPoints);
     };
     fetchingPoints();
-
-    
-    
   }, []);
 
   useEffect(() => {
@@ -170,85 +175,72 @@ const MyProfile = () => {
           </View>
         </View>
         {showPoints ? (
-        <View style={styles.dataEntry}>
-          <View>
-            <Text>Players you beat on average:</Text>
+          <View style={styles.dataEntry}>
+            <View>
+              <Text>Players you beat on average:</Text>
+            </View>
+            <View>
+              <Text style={styles.text}>{percentOf.toFixed(2)}</Text>
+            </View>
           </View>
-          <View>
-            <Text style={styles.text}>
-              {percentOf.toFixed(2)}
-            </Text>
-          </View>
-        </View>
         ) : (
           <View style={styles.dataEntry}>
-          <View>
-            <Text>Players you beat on average:</Text>
+            <View>
+              <Text>Players you beat on average:</Text>
+            </View>
+            <View>
+              <Text style={styles.text}>wait...</Text>
+            </View>
           </View>
-          <View>
-            <Text style={styles.text}>
-              wait...
-            </Text>
-          </View>
-        </View>
-        ) }
+        )}
         {showPoints ? (
-        <View style={styles.dataEntry}>
-          <View>
-            <Text>Games played:</Text>
+          <View style={styles.dataEntry}>
+            <View>
+              <Text>Games played:</Text>
+            </View>
+            <View>
+              <Text style={styles.text}>{games}</Text>
+            </View>
           </View>
-          <View>
-            <Text style={styles.text}>
-              {games}
-            </Text>
-          </View>
-        </View>
         ) : (
           <View style={styles.dataEntry}>
-          <View>
-            <Text>Games played:</Text>
+            <View>
+              <Text>Games played:</Text>
+            </View>
+            <View>
+              <Text style={styles.text}>wait...</Text>
+            </View>
           </View>
-          <View>
-            <Text style={styles.text}>
-              wait...
-            </Text>
-          </View>
-        </View>
-        ) }
+        )}
 
         {showPoints ? (
-        <View style={styles.dataEntry}>
-          <View>
-            <Text>Points:</Text>
+          <View style={styles.dataEntry}>
+            <View>
+              <Text>Points:</Text>
+            </View>
+            <View>
+              <Text style={styles.text}>{points}</Text>
+            </View>
           </View>
-          <View>
-            <Text style={styles.text}>
-              {points}
-            </Text>
-          </View>
-        </View>
         ) : (
           <View style={styles.dataEntry}>
-          <View>
-            <Text>Points:</Text>
+            <View>
+              <Text>Points:</Text>
+            </View>
+            <View>
+              <Text style={styles.text}>wait...</Text>
+            </View>
           </View>
-          <View>
-            <Text style={styles.text}>
-              wait...
-            </Text>
-          </View>
-        </View>
-        ) }
-       
+        )}
       </View>
       <TouchableOpacity onPress={showButtons}>
         <View style={styles.otherButtons}>
-          <Text>Change image</Text>
+          <Text style={styles.buttonText}>Change image</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.replace("Home")}>
         <View style={styles.otherButtons}>
-          <Text>Go to lobby</Text>
+          <Text style={styles.buttonText}>Go to lobby</Text>
         </View>
       </TouchableOpacity>
 

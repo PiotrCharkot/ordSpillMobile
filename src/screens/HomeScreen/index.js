@@ -4,6 +4,7 @@ import styles from "./styles";
 import { auth } from "../../firebase";
 import { useNavigation } from "@react-navigation/native";
 import Timer from "../../components/Timer";
+import LoadingScreen from "../LoadingScreen";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -15,9 +16,14 @@ const HomeScreen = () => {
   const [isNewGame, setIsNewGame] = useState(false);
 
   const signOutUser = () => {
-    auth.signOut().then(() => {
-      navigation.replace("Home");
-    });
+    auth
+      .signOut()
+      .then(() => {
+        navigation.replace("Home");
+      })
+      .catch(() => {
+        console.log("Could not log out!");
+      });
   };
 
   useEffect(() => {
@@ -30,7 +36,7 @@ const HomeScreen = () => {
       setIsLoading(false);
     };
     gettingTime();
-    return gettingTime;
+    return setTimeForCountdown;
   }, [isNewGame]);
 
   useEffect(() => {
@@ -43,7 +49,7 @@ const HomeScreen = () => {
       setIsLoadingPlayerCount(false);
     };
     gettingPlayersCount();
-    return gettingPlayersCount;
+    return setPlayersCount;
   }, [isNewGame]);
 
   useEffect(() => {
@@ -73,7 +79,7 @@ const HomeScreen = () => {
         <View style={styles.numOfPlayers}>
           <Text style={styles.displayText}>Number of players:</Text>
           {isLoadingPlayerCount ? (
-            <Text style={styles.textPlayerCount}>Loooooad...</Text>
+            <View style={styles.loaderCont}></View>
           ) : (
             <Text style={styles.textPlayerCount}>{playersCount}</Text>
           )}
@@ -108,7 +114,13 @@ const HomeScreen = () => {
             <Text style={styles.buttonText}>Rankings</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("MyProfil")}>
+        <TouchableOpacity
+          onPress={() => {
+            auth.currentUser
+              ? navigation.navigate("MyProfil")
+              : navigation.navigate("Login");
+          }}
+        >
           <View style={styles.otherButtons}>
             <Text style={styles.buttonText}>My profile</Text>
           </View>
