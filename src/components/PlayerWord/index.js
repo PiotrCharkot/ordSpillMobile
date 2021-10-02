@@ -14,11 +14,11 @@ export default PlayerWord;
 
 const styles = StyleSheet.create({
   container: {
-    height: 20,
-    width: 160,
+    height: 25,
+    width: 170,
   },
   text: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     color: "rgb(11,156,49)",
   },

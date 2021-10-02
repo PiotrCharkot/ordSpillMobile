@@ -61,9 +61,9 @@ const styles = StyleSheet.create({
     margin: 3,
   },
   timerContainer: {
-    alignItems: "flex-end",
     marginRight: 5,
     marginTop: 5,
+    alignItems: "center",
   },
   green: {
     height: screenWidth,

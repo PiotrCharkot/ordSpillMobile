@@ -21,10 +21,10 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   textLeft: {
-    fontSize: 25,
+    fontSize: 16,
   },
   textLeft2: {
-    fontSize: 25,
+    fontSize: 16,
     fontWeight: "bold",
   },
   rightUp: {

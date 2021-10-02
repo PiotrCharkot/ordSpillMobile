@@ -24,7 +24,7 @@ const ScoreScreen = ({ route, navigation }) => {
       title: "",
       headerStyle: { backgroundColor: "#B2DB34", shadowColor: "transparent" },
       headerTintColor: "#28A352",
-      headerBackTitle: "Answers",
+      headerBackTitle: "Ordliste",
     });
   }, [navigation]);
 
@@ -59,7 +59,7 @@ const ScoreScreen = ({ route, navigation }) => {
       if (parsedResponse[i].userID === userID) {
         setShowPlace(true);
         setMyPlace(parsedResponse[i].position);
-        setPercentOf(parsedResponse[i].percentOf);
+        setPercentOf(parsedResponse[i].percentOf.toFixed(2));
       }
     }
   }, 1500);
@@ -69,20 +69,29 @@ const ScoreScreen = ({ route, navigation }) => {
       <View style={styles.upperContainer}>
         <View style={styles.leftUp}>
           {showPlace ? (
-            <Text style={styles.textLeft}>
-              Your place:{" "}
-              <Text style={styles.textLeft2}>
-                {myPlace} you beat{percentOf}%
+            <View>
+              <Text style={styles.textLeft}>
+                Din plass: <Text style={styles.textLeft2}>{myPlace}</Text>
               </Text>
-            </Text>
+              <Text style={styles.textLeft}>
+                Du vinner med <Text style={styles.textLeft2}>{percentOf}</Text>{" "}
+                % av spillerne
+              </Text>
+            </View>
           ) : (
-            <Text style={styles.textLeft}>Your place:</Text>
+            <View>
+              <Text style={styles.textLeft}>Din plass:</Text>
+              <Text style={styles.textLeft}>
+                Du vinner med <Text style={styles.textLeft2}>0</Text> % av
+                spillerne
+              </Text>
+            </View>
           )}
 
           {isEndOfBreake ? (
             <TouchableOpacity onPress={() => navigation.replace("Play")}>
               <View style={styles.otherButtons}>
-                <Text style={styles.buttonText}>Play again</Text>
+                <Text style={styles.buttonText}>SPILL IGJEN</Text>
               </View>
             </TouchableOpacity>
           ) : (

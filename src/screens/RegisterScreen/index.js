@@ -32,22 +32,21 @@ const RegisterScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.formContainer}>
-        <Text style={styles.mainText}>Register here</Text>
         <Input
-          placeholder={"Username"}
+          placeholder={"Kallenavn"}
           autoFocus
           type={"text"}
           value={username}
           onChangeText={(text) => setUsername(text)}
         />
         <Input
-          placeholder={"Email"}
+          placeholder={"E-post"}
           type={"email"}
           value={email}
           onChangeText={(text) => setEmail(text)}
         />
         <Input
-          placeholder={"Password"}
+          placeholder={"Passord"}
           secureTextEntry
           type={"password"}
           value={password}
@@ -56,7 +55,7 @@ const RegisterScreen = ({ navigation }) => {
         />
 
         <Button
-          title="Register"
+          title="REGISTRERE"
           titleStyle={styles.buttonText}
           buttonStyle={styles.button}
           onPress={register}

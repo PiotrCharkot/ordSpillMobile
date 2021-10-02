@@ -40,14 +40,14 @@ const LoginScreen = ({ navigation }) => {
       </View>
       <View style={styles.formContainer}>
         <Input
-          placeholder={"Email"}
+          placeholder={"E-post"}
           autoFocus
           type={"email"}
           value={email}
           onChangeText={(text) => setEmail(text)}
         />
         <Input
-          placeholder={"Password"}
+          placeholder={"Passord"}
           secureTextEntry
           type={"password"}
           value={password}
@@ -55,13 +55,13 @@ const LoginScreen = ({ navigation }) => {
         />
 
         <Button
-          title="Login"
+          title="LOGG INN"
           titleStyle={styles.buttonText}
           buttonStyle={styles.button}
           onPress={signIn}
         />
         <Button
-          title="Register"
+          title="REGISTRERE"
           titleStyle={styles.buttonText}
           buttonStyle={styles.button}
           onPress={() => {
@@ -69,7 +69,7 @@ const LoginScreen = ({ navigation }) => {
           }}
         />
         <Button
-          title="Go to home"
+          title="TILBAKE"
           titleStyle={styles.buttonText}
           buttonStyle={styles.button}
           onPress={() => {

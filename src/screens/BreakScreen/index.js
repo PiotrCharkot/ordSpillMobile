@@ -77,7 +77,7 @@ const BreakScreen = (prop) => {
   const url = "https://acidic-heavy-caterpillar.glitch.me/resultsMobile";
 
   if (playersAnswers.length === 0) {
-    playersAnswers = [{ id: 1, word: "no answers" }];
+    playersAnswers = [{ id: 1, word: "ingen ord" }];
   }
 
   const longestAnswerObj = playersAnswers.reduce((a, b) =>
@@ -265,47 +265,47 @@ const BreakScreen = (prop) => {
 
   const dataForSectionList = [
     {
-      title: "13 letters word",
+      title: "13 bokstav",
       data: answer13,
     },
     {
-      title: "12 letters word",
+      title: "12 bokstav",
       data: answer12,
     },
     {
-      title: "11 letters word",
+      title: "11 bokstav",
       data: answer11,
     },
     {
-      title: "10 letters word",
+      title: "10 bokstav",
       data: answer10,
     },
     {
-      title: "9 letters word",
+      title: "9 bokstav",
       data: answer9,
     },
     {
-      title: "8 letters word",
+      title: "8 bokstav",
       data: answer8,
     },
     {
-      title: "7 letters word",
+      title: "7 bokstav",
       data: answer7,
     },
     {
-      title: "6 letters word",
+      title: "6 bokstav",
       data: answer6,
     },
     {
-      title: "5 letters word",
+      title: "5 bokstav",
       data: answer5,
     },
     {
-      title: "4 letters word",
+      title: "4 bokstav",
       data: answer4,
     },
     {
-      title: "3 letters word",
+      title: "3 bokstav",
       data: answer3,
     },
   ];
@@ -348,11 +348,11 @@ const BreakScreen = (prop) => {
           </View>
           <Text style={styles.pointsText}>
             <Text style={styles.pointsColor}>{points}</Text>
-            <Text>/ {totalPoints} points</Text>
+            <Text>/ {totalPoints} poeng</Text>
           </Text>
           <Text style={styles.pointsText}>
             <Text style={styles.pointsColor}>{numOfPlayerAnswers}</Text>
-            <Text>/ {numOfServerAnswers} words</Text>
+            <Text>/ {numOfServerAnswers} ord</Text>
           </Text>
         </View>
 
@@ -367,7 +367,7 @@ const BreakScreen = (prop) => {
               }
             >
               <View style={styles.otherButtons}>
-                <Text style={styles.buttonText}>See scores</Text>
+                <Text style={styles.buttonText}>RESULTAT</Text>
               </View>
             </TouchableOpacity>
           ) : (
@@ -377,7 +377,7 @@ const BreakScreen = (prop) => {
           {isEndOfBreake ? (
             <TouchableOpacity onPress={() => navigation.replace("Play")}>
               <View style={styles.otherButtons}>
-                <Text style={styles.buttonText}>Play again</Text>
+                <Text style={styles.buttonText}>SPILL IGJEN</Text>
               </View>
             </TouchableOpacity>
           ) : (

@@ -77,7 +77,7 @@ const HomeScreen = () => {
       </View>
       <View style={styles.gameInfo}>
         <View style={styles.numOfPlayers}>
-          <Text style={styles.displayText}>Number of players:</Text>
+          <Text style={styles.displayText}>Spillere online:</Text>
           {isLoadingPlayerCount ? (
             <View style={styles.loaderCont}></View>
           ) : (
@@ -85,7 +85,7 @@ const HomeScreen = () => {
           )}
         </View>
         <View style={styles.gameTimeInfo}>
-          <Text style={styles.displayText}>Next round in:</Text>
+          <Text style={styles.displayText}>PÅGÅENDE SPILL:</Text>
           {isLoading ? (
             <View style={{ height: 95 }}></View>
           ) : (
@@ -100,18 +100,18 @@ const HomeScreen = () => {
       </View>
       <View style={styles.buttonsContainer}>
         {auth.currentUser ? (
-          <Text style={styles.welcomeText}>Welcome {username}</Text>
+          <Text style={styles.welcomeText}>VELKOMMEN {username}</Text>
         ) : (
-          <Text style={styles.welcomeText}>Welcome</Text>
+          <Text style={styles.welcomeText}>VELKOMMEN</Text>
         )}
         <TouchableOpacity onPress={() => navigation.navigate("Play")}>
           <View style={styles.playButton}>
-            <Text style={styles.buttonText}>Play</Text>
+            <Text style={styles.buttonText}>SPILL NÅ</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("Ranking")}>
           <View style={styles.otherButtons}>
-            <Text style={styles.buttonText}>Rankings</Text>
+            <Text style={styles.buttonText}>TOPPSPILLERE</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -122,19 +122,19 @@ const HomeScreen = () => {
           }}
         >
           <View style={styles.otherButtons}>
-            <Text style={styles.buttonText}>My profile</Text>
+            <Text style={styles.buttonText}>MIN PROFIL</Text>
           </View>
         </TouchableOpacity>
         {auth.currentUser ? (
           <TouchableOpacity onPress={signOutUser}>
             <View style={styles.otherButtons}>
-              <Text style={styles.buttonText}>Log out</Text>
+              <Text style={styles.buttonText}>LOGG UT</Text>
             </View>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity onPress={() => navigation.navigate("Login")}>
             <View style={styles.otherButtons}>
-              <Text style={styles.buttonText}>Log in</Text>
+              <Text style={styles.buttonText}>LOGG INN</Text>
             </View>
           </TouchableOpacity>
         )}

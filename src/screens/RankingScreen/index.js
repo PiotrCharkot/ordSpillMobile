@@ -20,7 +20,7 @@ const RankingScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Ranking</Text>
+        <Text style={styles.headerText}>TOPPSPILLERE</Text>
       </View>
       <FlatList
         style={styles.list}

@@ -68,7 +68,6 @@ const MyProfile = () => {
       );
       setGetPoints(await response.json());
       setShowData(true);
-      console.log("data from databse", getPoints);
     };
     fetchingPoints();
   }, []);
@@ -98,8 +97,6 @@ const MyProfile = () => {
     }
 
     let result = await ImagePicker.launchCameraAsync();
-
-    console.log("photo results are hereeeeeeeeeeeeee", result);
 
     setShowOptions(false);
 
@@ -143,7 +140,6 @@ const MyProfile = () => {
       .child("images/" + imageName);
     ref.put(blob);
     setFileUrl(await ref.getDownloadURL());
-    console.log("here is some patttth", fileUrl);
   };
 
   return (
@@ -155,7 +151,7 @@ const MyProfile = () => {
       <View style={styles.textConteiner}>
         <View style={styles.dataEntry}>
           <View>
-            <Text>Username:</Text>
+            <Text>Kallenavn:</Text>
           </View>
           <View>
             <Text style={styles.text}>
@@ -166,7 +162,7 @@ const MyProfile = () => {
 
         <View style={styles.dataEntry}>
           <View>
-            <Text>Email:</Text>
+            <Text>E-post:</Text>
           </View>
           <View>
             <Text style={styles.text}>
@@ -177,7 +173,7 @@ const MyProfile = () => {
         {showPoints ? (
           <View style={styles.dataEntry}>
             <View>
-              <Text>Players you beat on average:</Text>
+              <Text>Spillere du slår i gjennomsnitt:</Text>
             </View>
             <View>
               <Text style={styles.text}>{percentOf.toFixed(2)}</Text>
@@ -186,17 +182,17 @@ const MyProfile = () => {
         ) : (
           <View style={styles.dataEntry}>
             <View>
-              <Text>Players you beat on average:</Text>
+              <Text>Spillere du slår i gjennomsnitt:</Text>
             </View>
             <View>
-              <Text style={styles.text}>wait...</Text>
+              <Text style={styles.text}>vent...</Text>
             </View>
           </View>
         )}
         {showPoints ? (
           <View style={styles.dataEntry}>
             <View>
-              <Text>Games played:</Text>
+              <Text>Antall spill:</Text>
             </View>
             <View>
               <Text style={styles.text}>{games}</Text>
@@ -205,10 +201,10 @@ const MyProfile = () => {
         ) : (
           <View style={styles.dataEntry}>
             <View>
-              <Text>Games played:</Text>
+              <Text>Antall spill:</Text>
             </View>
             <View>
-              <Text style={styles.text}>wait...</Text>
+              <Text style={styles.text}>vent...</Text>
             </View>
           </View>
         )}
@@ -216,7 +212,7 @@ const MyProfile = () => {
         {showPoints ? (
           <View style={styles.dataEntry}>
             <View>
-              <Text>Points:</Text>
+              <Text>Poeng:</Text>
             </View>
             <View>
               <Text style={styles.text}>{points}</Text>
@@ -225,22 +221,22 @@ const MyProfile = () => {
         ) : (
           <View style={styles.dataEntry}>
             <View>
-              <Text>Points:</Text>
+              <Text>Poeng:</Text>
             </View>
             <View>
-              <Text style={styles.text}>wait...</Text>
+              <Text style={styles.text}>vent...</Text>
             </View>
           </View>
         )}
       </View>
       <TouchableOpacity onPress={showButtons}>
         <View style={styles.otherButtons}>
-          <Text style={styles.buttonText}>Change image</Text>
+          <Text style={styles.buttonText}>ENDRE BILDE</Text>
         </View>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.replace("Home")}>
         <View style={styles.otherButtons}>
-          <Text style={styles.buttonText}>Go to lobby</Text>
+          <Text style={styles.buttonText}>TILBAKE</Text>
         </View>
       </TouchableOpacity>
 
@@ -248,17 +244,17 @@ const MyProfile = () => {
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={choosePic}>
             <View style={styles.otherButtons}>
-              <Text style={styles.buttonText}>Choose Picture</Text>
+              <Text style={styles.buttonText}>VELG BILDE</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={takePic}>
             <View style={styles.otherButtons}>
-              <Text style={styles.buttonText}>Take Photo</Text>
+              <Text style={styles.buttonText}>TA BILDE</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => setShowOptions(false)}>
             <View style={styles.otherButtons}>
-              <Text style={styles.buttonText}>Cancel</Text>
+              <Text style={styles.buttonText}>AVBRYT</Text>
             </View>
           </TouchableOpacity>
         </View>

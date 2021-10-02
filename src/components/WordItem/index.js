@@ -16,12 +16,12 @@ export default WordItem;
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: "bold",
     color: "#28A352",
   },
   title2: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: "bold",
     color: "#1B486B",
   },

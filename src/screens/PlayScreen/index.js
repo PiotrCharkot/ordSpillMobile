@@ -17,6 +17,7 @@ import { Audio } from "expo-av";
 import * as firebase from "firebase";
 import styles from "./styles";
 import Timer from "../../components/Timer";
+import NewTimer from "../../components/NewTimer";
 import GridTile from "../../components/GridTile";
 import PlayerWord from "../../components/PlayerWord";
 import BreakScreen from "../BreakScreen";
@@ -30,6 +31,7 @@ console.log("lina A", coordinants.xa);
 const PlayScreen = ({ navigation }) => {
   //const declarations
   const urlLink = "https://acidic-heavy-caterpillar.glitch.me/grid";
+  const urlClock = "https://acidic-heavy-caterpillar.glitch.me/clock";
   const breakTime = 25;
   const scoresTime = 3;
   const screenWidth = Dimensions.get("window").width;
@@ -62,6 +64,8 @@ const PlayScreen = ({ navigation }) => {
     "https://image.shutterstock.com/image-vector/user-login-authenticate-icon-human-260nw-1365533969.jpg"
   );
   const [clockCounter, setClockCounter] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
   const [combo, setCombo] = useState([]);
   const [reload, setReload] = useState(true);
   const [isBreak, setIsBreak] = useState(false);
@@ -125,6 +129,9 @@ const PlayScreen = ({ navigation }) => {
   const [flushGreen, setFlushGreen] = useState(false);
   const [flushOrange, setFlushOrange] = useState(false);
   const [flushRed, setFlushRed] = useState(false);
+  const [word, setWord] = useState("");
+  const [clockUpdate, setClockUpdate] = useState(false);
+  const [ticToc, setTicToc] = useState(true);
 
   //function reswitching layout trigger
   const switchOnTrigger = (key, arr) => {
@@ -253,6 +260,10 @@ const PlayScreen = ({ navigation }) => {
       setTimeout(() => {
         setFlushRed(false);
       }, 200);
+      setClockUpdate(true);
+      setTimeout(() => {
+        setClockUpdate(false);
+      }, 1);
     }
 
     setCurrentAnswer("");
@@ -282,7 +293,6 @@ const PlayScreen = ({ navigation }) => {
   useEffect(() => {
     return sound
       ? () => {
-          console.log("Unloading Sound");
           sound.unloadAsync();
         }
       : undefined;
@@ -334,6 +344,21 @@ const PlayScreen = ({ navigation }) => {
       ),
     });
   }, [navigation]);
+
+  useLayoutEffect(() => {
+    const fetchUpdateTime = async () => {
+      const gettingTimeUpdate = await fetch(urlClock);
+      const resTime = await gettingTimeUpdate.json();
+      console.log(resTime);
+      setClockCounter(resTime);
+      let newTime = new Date().getTime();
+      console.log("newtime is now:", newTime);
+
+      console.log("actual clock:", clockCounter);
+    };
+
+    fetchUpdateTime();
+  }, []);
 
   // fetch from server
   useEffect(() => {
@@ -905,18 +930,43 @@ const PlayScreen = ({ navigation }) => {
         </View>
         <View style={styles.pointsContainer}>
           <View style={styles.timerContainer}>
-            <Timer
-              clockCounter={clockCounter - breakTime}
-              runDown={(boolean) => setIsBreak(boolean)}
-            />
+            {clockUpdate ? (
+              <Text></Text>
+            ) : (
+              <NewTimer clockCounter={clockCounter} />
+            )}
+            <NewTimer clockCounter={clockCounter} />
+
+            <CountdownCircleTimer
+              size={80}
+              strokeWidth={8}
+              isPlaying
+              duration={clockCounter - breakTime}
+              colors={[
+                ["#004777", 0.4],
+                ["#F7B801", 0.4],
+                ["#A30000", 0.2],
+              ]}
+              onComplete={() => setIsBreak(true)}
+            >
+              {({ remainingTime, animatedColor }) => (
+                <View style={styles.timerContainer}>
+                  <Text>{word}</Text>
+                  <Animated.Text style={{ color: animatedColor, fontSize: 28 }}>
+                    {remainingTime}
+                  </Animated.Text>
+                  <Text></Text>
+                </View>
+              )}
+            </CountdownCircleTimer>
           </View>
           <Text style={styles.pointsText}>
             <Text style={styles.pointsColor}>{points}</Text>
-            <Text>/ {totalPoints} points</Text>
+            <Text>/ {totalPoints} poeng</Text>
           </Text>
           <Text style={styles.pointsText}>
             <Text style={styles.pointsColor}>{playersAnswers.length}</Text>
-            <Text>/ {serverAnswers.length} words</Text>
+            <Text>/ {serverAnswers.length} ord</Text>
           </Text>
         </View>
       </View>
@@ -1000,5 +1050,7 @@ const PlayScreen = ({ navigation }) => {
     </View>
   );
 };
+
+//changes
 
 export default PlayScreen;
