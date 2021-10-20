@@ -41,12 +41,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   timer: {
-    marginTop: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 35,
   },
   welcomeText: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 20,
+  },
+  usernameText: {
+    color: "#28A352",
   },
   buttonsContainer: {
     width: "100%",

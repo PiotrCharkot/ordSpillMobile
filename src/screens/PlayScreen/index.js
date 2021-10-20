@@ -345,21 +345,6 @@ const PlayScreen = ({ navigation }) => {
     });
   }, [navigation]);
 
-  useLayoutEffect(() => {
-    const fetchUpdateTime = async () => {
-      const gettingTimeUpdate = await fetch(urlClock);
-      const resTime = await gettingTimeUpdate.json();
-      console.log(resTime);
-      setClockCounter(resTime);
-      let newTime = new Date().getTime();
-      console.log("newtime is now:", newTime);
-
-      console.log("actual clock:", clockCounter);
-    };
-
-    fetchUpdateTime();
-  }, []);
-
   // fetch from server
   useEffect(() => {
     const fetchData = async () => {
@@ -411,15 +396,15 @@ const PlayScreen = ({ navigation }) => {
           res.answer12letters.length * 100 +
           res.answer13letters.length * 121
       );
-      if (res.clockCounter - scoresTime <= 0) {
-        navigation.navigate("Scores");
-      }
       if (res.clockCounter - breakTime <= 0) {
         setIsBreak(true);
       }
       setIsLoading(false);
     };
     fetchData();
+    return () => {
+      fetchData;
+    };
   }, [reload]);
 
   // effects for grid tiles
@@ -930,35 +915,10 @@ const PlayScreen = ({ navigation }) => {
         </View>
         <View style={styles.pointsContainer}>
           <View style={styles.timerContainer}>
-            {clockUpdate ? (
-              <Text></Text>
-            ) : (
-              <NewTimer clockCounter={clockCounter} />
-            )}
-            <NewTimer clockCounter={clockCounter} />
-
-            <CountdownCircleTimer
-              size={80}
-              strokeWidth={8}
-              isPlaying
-              duration={clockCounter - breakTime}
-              colors={[
-                ["#004777", 0.4],
-                ["#F7B801", 0.4],
-                ["#A30000", 0.2],
-              ]}
-              onComplete={() => setIsBreak(true)}
-            >
-              {({ remainingTime, animatedColor }) => (
-                <View style={styles.timerContainer}>
-                  <Text>{word}</Text>
-                  <Animated.Text style={{ color: animatedColor, fontSize: 28 }}>
-                    {remainingTime}
-                  </Animated.Text>
-                  <Text></Text>
-                </View>
-              )}
-            </CountdownCircleTimer>
+            <NewTimer
+              clockCounter={clockCounter}
+              runDown={(boolean) => setIsBreak(boolean)}
+            />
           </View>
           <Text style={styles.pointsText}>
             <Text style={styles.pointsColor}>{points}</Text>

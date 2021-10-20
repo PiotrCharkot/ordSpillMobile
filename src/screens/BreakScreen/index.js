@@ -12,6 +12,7 @@ import { auth } from "../../firebase";
 import WordItem from "../../components/WordItem";
 import Timer from "../../components/Timer";
 import SmallGridTile from "../../components/SmallGridTile";
+import NewTimer from "../../components/NewTimer";
 
 const BreakScreen = (prop) => {
   const dataFromServer = { prop };
@@ -33,6 +34,7 @@ const BreakScreen = (prop) => {
   const n = gridData.n;
   const o = gridData.o;
   const p = gridData.p;
+  const q = "Å";
   let username = gridData.username;
   const userImgAdress = gridData.userImgAdress;
   const totalPoints = gridData.totalPoints;
@@ -65,6 +67,8 @@ const BreakScreen = (prop) => {
   const [isEndOfBreake, setIsEndOfBreak] = useState(false);
   const [timeForCountdown, setTimeForCountdown] = useState(0);
   const [trigger, setTrigger] = useState(true);
+  const [listDelay, setListDelay] = useState(true);
+  const [hideList, setHideList] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showTimer, setShowTimer] = useState(false);
   const [showScoresButton, setShowScoresButton] = useState(false);
@@ -76,7 +80,7 @@ const BreakScreen = (prop) => {
   let position = 0;
   const url = "https://acidic-heavy-caterpillar.glitch.me/resultsMobile";
 
-  if (playersAnswers.length === 0) {
+  if (playersAnswers.length === 0 || playersAnswers.length === undefined) {
     playersAnswers = [{ id: 1, word: "ingen ord" }];
   }
 
@@ -86,7 +90,7 @@ const BreakScreen = (prop) => {
   const longestAnswer = longestAnswerObj.word;
 
   if (auth.currentUser && userID === null) {
-    console.log("here is authhhhhh", auth.currentUser);
+    console.log("here is auth", auth.currentUser);
     setUserID(auth.currentUser.uid);
   } else if (userID === null) {
     setUserID(Math.random());
@@ -107,7 +111,6 @@ const BreakScreen = (prop) => {
 
   const displayLongestWord = (num) => {
     if (num >= combo.length) {
-      console.log("clearing interval");
       clearInterval(interval);
       return;
     }
@@ -187,8 +190,10 @@ const BreakScreen = (prop) => {
       });
       const parsedResponse = await response.json();
     };
-    data.longestAnswer !== "no answers" ? postingResult() : notPosting();
-    return postingResult;
+    data.longestAnswer !== "ingen ord" ? postingResult() : notPosting();
+    return () => {
+      postingResult;
+    };
   }, []);
 
   useEffect(() => {
@@ -201,12 +206,15 @@ const BreakScreen = (prop) => {
       setIsLoading(true);
     };
     gettingTime();
+    return () => {
+      gettingTime;
+    };
   }, []);
 
   useEffect(() => {
     const timeoutTimer = setTimeout(() => {
       setShowTimer(true);
-    }, 250);
+    }, 50);
     return () => {
       clearTimeout(timeoutTimer);
     };
@@ -221,9 +229,25 @@ const BreakScreen = (prop) => {
     };
   }, []);
 
-  let interval = setInterval(() => {
-    displayLongestWord(count);
-  }, 500);
+  useEffect(() => {
+    let listDealeyTimeout = setTimeout(() => {
+      setListDelay(false);
+    }, 500);
+    return () => {
+      listDealeyTimeout;
+    };
+  }, []);
+
+  useEffect(() => {
+    showTimer && isLoading && timeForCountdown < 8 ? setHideList(true) : null;
+    console.log("time", timeForCountdown);
+  }, [isLoading]);
+
+  let interval = !hideList
+    ? setInterval(() => {
+        displayLongestWord(count);
+      }, 500)
+    : null;
 
   const dataForFlatList = gridData.serverAnswers.map((item) => {
     return { word: item, id: Math.random().toString() };
@@ -323,24 +347,35 @@ const BreakScreen = (prop) => {
   return (
     <View style={styles.container}>
       <View style={styles.serverAnswers}>
-        <SectionList
-          sections={dataForSectionListFinal}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({ item }) => (
-            <WordItem title={item} playersAnswers={playersAnswers} />
-          )}
-          renderSectionHeader={({ section: { title } }) => (
-            <Text style={styles.header}>{title}</Text>
-          )}
-        />
+        {hideList ? (
+          <View style={styles.replaceSection}>
+            <Text style={styles.replaceSectionText}>
+              Neste spill kommer snart
+            </Text>
+          </View>
+        ) : listDelay ? (
+          <Text></Text>
+        ) : (
+          <SectionList
+            sections={dataForSectionListFinal}
+            keyExtractor={(item, index) => item + index}
+            renderItem={({ item }) => (
+              <WordItem title={item} playersAnswers={playersAnswers} />
+            )}
+            renderSectionHeader={({ section: { title } }) => (
+              <Text style={styles.header}>{title}</Text>
+            )}
+          />
+        )}
       </View>
       <View style={styles.rightSideCont}>
         <View style={styles.upperContainer}>
           <View style={styles.timerContainer}>
             {showTimer && isLoading ? (
-              <Timer
+              <NewTimer
                 clockCounter={timeForCountdown}
                 runDown={(boolean) => setIsEndOfBreak(boolean)}
+                breakTimer={true}
               />
             ) : (
               <View style={styles.timerContainer2}></View>
@@ -348,11 +383,11 @@ const BreakScreen = (prop) => {
           </View>
           <Text style={styles.pointsText}>
             <Text style={styles.pointsColor}>{points}</Text>
-            <Text>/ {totalPoints} poeng</Text>
+            <Text>/ {hideList ? "0" : totalPoints} poeng</Text>
           </Text>
           <Text style={styles.pointsText}>
             <Text style={styles.pointsColor}>{numOfPlayerAnswers}</Text>
-            <Text>/ {numOfServerAnswers} ord</Text>
+            <Text>/ {hideList ? "0" : numOfServerAnswers} ord</Text>
           </Text>
         </View>
 
@@ -362,7 +397,7 @@ const BreakScreen = (prop) => {
               onPress={() =>
                 navigation.navigate("Scores", {
                   params: userID,
-                  params2: isEndOfBreake,
+                  params2: isEndOfBreake || false,
                 })
               }
             >
@@ -384,64 +419,125 @@ const BreakScreen = (prop) => {
             <View style={styles.otherButtonsClear}></View>
           )}
         </View>
-        <View style={styles.samllGridCont}>
-          <View style={styles.gridRow}>
-            <View style={styles.tileContainer}>
-              <SmallGridTile letter={a} marker={colorA} />
+        {hideList ? (
+          <View style={styles.samllGridCont}>
+            <View style={styles.gridRow}>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={q} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={q} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={q} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={q} />
+              </View>
             </View>
-            <View style={styles.tileContainer}>
-              <SmallGridTile letter={b} marker={colorB} />
+            <View style={styles.gridRow}>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={q} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={q} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={q} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={q} />
+              </View>
             </View>
-            <View style={styles.tileContainer}>
-              <SmallGridTile letter={c} marker={colorC} />
+            <View style={styles.gridRow}>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={q} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={q} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={q} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={q} />
+              </View>
             </View>
-            <View style={styles.tileContainer}>
-              <SmallGridTile letter={d} marker={colorD} />
+            <View style={styles.gridRow}>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={q} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={q} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={q} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={q} />
+              </View>
             </View>
           </View>
-          <View style={styles.gridRow}>
-            <View style={styles.tileContainer}>
-              <SmallGridTile letter={e} marker={colorE} />
+        ) : (
+          <View style={styles.samllGridCont}>
+            <View style={styles.gridRow}>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={a} marker={colorA} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={b} marker={colorB} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={c} marker={colorC} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={d} marker={colorD} />
+              </View>
             </View>
-            <View style={styles.tileContainer}>
-              <SmallGridTile letter={f} marker={colorF} />
+            <View style={styles.gridRow}>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={e} marker={colorE} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={f} marker={colorF} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={g} marker={colorG} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={h} marker={colorH} />
+              </View>
             </View>
-            <View style={styles.tileContainer}>
-              <SmallGridTile letter={g} marker={colorG} />
+            <View style={styles.gridRow}>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={x} marker={colorI} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={j} marker={colorJ} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={k} marker={colorK} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={l} marker={colorL} />
+              </View>
             </View>
-            <View style={styles.tileContainer}>
-              <SmallGridTile letter={h} marker={colorH} />
+            <View style={styles.gridRow}>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={m} marker={colorM} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={n} marker={colorN} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={o} marker={colorO} />
+              </View>
+              <View style={styles.tileContainer}>
+                <SmallGridTile letter={p} marker={colorP} />
+              </View>
             </View>
           </View>
-          <View style={styles.gridRow}>
-            <View style={styles.tileContainer}>
-              <SmallGridTile letter={x} marker={colorI} />
-            </View>
-            <View style={styles.tileContainer}>
-              <SmallGridTile letter={j} marker={colorJ} />
-            </View>
-            <View style={styles.tileContainer}>
-              <SmallGridTile letter={k} marker={colorK} />
-            </View>
-            <View style={styles.tileContainer}>
-              <SmallGridTile letter={l} marker={colorL} />
-            </View>
-          </View>
-          <View style={styles.gridRow}>
-            <View style={styles.tileContainer}>
-              <SmallGridTile letter={m} marker={colorM} />
-            </View>
-            <View style={styles.tileContainer}>
-              <SmallGridTile letter={n} marker={colorN} />
-            </View>
-            <View style={styles.tileContainer}>
-              <SmallGridTile letter={o} marker={colorO} />
-            </View>
-            <View style={styles.tileContainer}>
-              <SmallGridTile letter={p} marker={colorP} />
-            </View>
-          </View>
-        </View>
+        )}
       </View>
     </View>
   );

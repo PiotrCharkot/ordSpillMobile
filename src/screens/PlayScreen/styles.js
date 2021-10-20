@@ -64,6 +64,8 @@ const styles = StyleSheet.create({
     marginRight: 5,
     marginTop: 5,
     alignItems: "center",
+    justifyContent: "center",
+    paddingBottom: 20,
   },
   green: {
     height: screenWidth,

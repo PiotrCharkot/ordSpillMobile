@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { View, Text } from "react-native";
+import styles from "./styles";
 
 const NewTimer = (props) => {
-  const { clockCounter } = props;
+  const { clockCounter, runDown, breakTimer } = props;
 
-  initialTimeBreake = clockCounter - 25;
+  breakTimer
+    ? (initialTimeBreake = clockCounter)
+    : (initialTimeBreake = clockCounter - 25);
 
   initialMinutes = initialTimeBreake / 60;
   actuallMinutes = Math.floor(initialMinutes);
@@ -20,20 +23,27 @@ const NewTimer = (props) => {
       let nextTime = new Date().getTime();
       let timePassed = nextTime - startTime;
       let secondsPassed = Math.floor(timePassed / 1000);
-      let difference = seconds - secondsPassed;
+      let difference = initialTimeBreake - secondsPassed;
 
-      difference > 0 ? setSeconds(seconds - secondsPassed) : console.log("1");
-      difference === 0 && minutes > 0
+      difference > 0 && difference <= 59 && !breakTimer && minutes === 1
+        ? setSeconds(seconds - secondsPassed + 60)
+        : setSeconds(seconds - secondsPassed);
+
+      difference === 59
         ? (() => {
             setSeconds(59);
             setMinutes(0);
           })()
         : null;
-      difference < 0 && difference > -59
-        ? setSeconds(seconds - secondsPassed + 59)
-        : null;
-      difference < 0 && difference <= -59
-        ? console.log("now it is time to finish")
+
+      difference <= 0
+        ? (() => {
+            setMinutes(0);
+            setSeconds(0);
+            clearInterval(timestampInteraval);
+            runDown(true);
+            console.log("end of game");
+          })()
         : null;
     }, 1000);
 
@@ -43,9 +53,11 @@ const NewTimer = (props) => {
   }, []);
 
   return (
-    <View>
-      {minutes === 0 && seconds === 0 ? null : (
-        <Text>
+    <View style={styles.container}>
+      {initialTimeBreake < 0 ? (
+        <Text style={styles.timeText}> 0:00</Text>
+      ) : (
+        <Text style={styles.timeText}>
           {" "}
           {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
         </Text>

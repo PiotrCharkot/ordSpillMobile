@@ -4,10 +4,11 @@ import PlayerItem from "../../components/PlayerItem";
 import Timer from "../../components/Timer";
 import LoadingScreen from "../LoadingScreen";
 import styles from "../ScoreScreen/styles";
+import NewTimer from "../../components/NewTimer";
 
 const ScoreScreen = ({ route, navigation }) => {
   const data = route.params;
-  const isNextGameReady = data.params2;
+  const isNextGameReady = data.params2 || false;
   const userID = data.params;
   const [timeForCountdown, setTimeForCountdown] = useState(0);
   const [parsedResponse, setParsedResponse] = useState([]);
@@ -64,6 +65,12 @@ const ScoreScreen = ({ route, navigation }) => {
     }
   }, 1500);
 
+  !isLoading
+    ? setTimeout(() => {
+        setIsEndOfBreak(true);
+      }, timeForCountdown * 1000)
+    : null;
+
   return (
     <View style={styles.container}>
       <View style={styles.upperContainer}>
@@ -96,18 +103,6 @@ const ScoreScreen = ({ route, navigation }) => {
             </TouchableOpacity>
           ) : (
             <View style={styles.otherButtonsClear}></View>
-          )}
-        </View>
-        <View style={styles.rightUp}>
-          {isLoading ? (
-            <View style={styles.timerContainer}>
-              <View></View>
-            </View>
-          ) : (
-            <Timer
-              clockCounter={timeForCountdown}
-              runDown={(boolean) => setIsEndOfBreak(boolean)}
-            />
           )}
         </View>
       </View>

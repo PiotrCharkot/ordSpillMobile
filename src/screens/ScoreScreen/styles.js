@@ -31,9 +31,11 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   timerContainer: {
-    alignItems: "flex-end",
+    alignItems: "center",
+    justifyContent: "center",
     marginRight: 5,
     marginTop: 5,
+    paddingBottom: 20,
   },
   image: {
     height: 150,

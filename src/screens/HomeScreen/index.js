@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import styles from "./styles";
 import { auth } from "../../firebase";
 import { useNavigation } from "@react-navigation/native";
+import NewTimer from "../../components/NewTimer";
 import Timer from "../../components/Timer";
 import LoadingScreen from "../LoadingScreen";
 
@@ -85,12 +86,12 @@ const HomeScreen = () => {
           )}
         </View>
         <View style={styles.gameTimeInfo}>
-          <Text style={styles.displayText}>PÅGÅENDE SPILL:</Text>
+          <Text style={styles.displayText}>Pågående spill:</Text>
           {isLoading ? (
             <View style={{ height: 95 }}></View>
           ) : (
             <View style={styles.timer}>
-              <Timer
+              <NewTimer
                 clockCounter={timeForCountdown}
                 runDown={(boolean) => setIsNewGame(boolean)}
               />
@@ -100,11 +101,13 @@ const HomeScreen = () => {
       </View>
       <View style={styles.buttonsContainer}>
         {auth.currentUser ? (
-          <Text style={styles.welcomeText}>VELKOMMEN {username}</Text>
+          <Text style={styles.welcomeText}>
+            VELKOMMEN <Text style={styles.usernameText}>{username}</Text>{" "}
+          </Text>
         ) : (
           <Text style={styles.welcomeText}>VELKOMMEN</Text>
         )}
-        <TouchableOpacity onPress={() => navigation.navigate("Play")}>
+        <TouchableOpacity onPress={() => navigation.replace("Play")}>
           <View style={styles.playButton}>
             <Text style={styles.buttonText}>SPILL NÅ</Text>
           </View>

@@ -33,15 +33,29 @@ const styles = StyleSheet.create({
   upperContainer: {
     justifyContent: "flex-end",
   },
+  replaceSection: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  replaceSectionText: {
+    color: "#28A352",
+    fontSize: 20,
+    fontWeight: "bold",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 40,
+  },
   rightSideCont: {
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "flex-end",
   },
   timerContainer: {
-    alignItems: "flex-end",
+    alignItems: "center",
+    justifyContent: "center",
     marginRight: 5,
     marginTop: 5,
+    paddingBottom: 20,
   },
   pointsContainer: {
     justifyContent: "flex-end",
