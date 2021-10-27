@@ -32,5 +32,16 @@
   "devDependencies": {
     "@babel/core": "^7.9.0"
   },
-  "private": true
+  "private": true,
+  "expo": {
+    "name": "Piotr Charkot",
+    "description": "word game",
+    "ios": {
+      "supportsTablet": true
+    },
+	
+      "android": {
+      "package": "com.yourcompany.yourappname"
+    }
+  }
 }
